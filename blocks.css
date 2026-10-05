@@ -205,6 +205,3 @@ img.blk-ic{object-fit:contain}
 /* Desktop: the Create (05) photo moves a little away from the text (right in English, left in Hebrew), so the headline ends before the elephant.
    Same photo, same size; its left edge fades into the dark background, so no seam shows. */
 @media (min-width:761px){#site .create img{transform:translateX(calc(13vw + max(0px, (100vw - 1440px) * .16)));-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 14vw);mask-image:linear-gradient(90deg,transparent 0,#000 14vw)}[dir=rtl] #site .create img{transform:translateX(calc(-13vw - max(0px, (100vw - 1440px) * .16)));-webkit-mask-image:linear-gradient(270deg,transparent 0,#000 14vw);mask-image:linear-gradient(270deg,transparent 0,#000 14vw)}}
-
-/* The MWP mark in the top-left corner is gold-yellow (the site's accent), on every screen. */
-#site .mark{color:var(--gold);mix-blend-mode:normal}
