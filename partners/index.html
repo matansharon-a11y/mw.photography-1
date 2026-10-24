@@ -109,8 +109,6 @@ footer .wrap{padding-block:22px;display:flex;justify-content:space-between;gap:1
   .top img{height:36px}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
-.for{display:inline-flex;align-items:center;gap:10px;margin-top:22px;padding:8px 16px;border:1px solid var(--line);border-radius:64px;font-family:var(--f-label);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--cream)}
-.for b{color:var(--gold);font-weight:700;letter-spacing:.12em}
 img{max-width:100%}
 [hidden]{display:none!important}
 </style>
@@ -132,7 +130,6 @@ img{max-width:100%}
       <div class="who">
         <div><strong>Matan Sharon</strong><span>Founder &amp; CEO, MW Photo Tours and The Wild Side of Photography</span></div>
       </div>
-      <div class="for" id="for" hidden>Prepared for <b id="brand"></b></div>
       <div class="btns">
         <a class="btn" href="https://mw-phototours.com/en/">Explore MW Photo Tours</a>
         <a class="btn ghost" href="https://mw-phototours.com/en/the-wild-side-of-photography/">Read the magazine</a>
@@ -220,17 +217,5 @@ img{max-width:100%}
 </section>
 
 <footer><div class="wrap"><span>MW Photo Tours · Israel</span><span>Photography © Matan Sharon</span></div></footer>
-<script>
-(function(){
-  var B={sony:"Sony",seaandsea:"Sea&Sea",nauticam:"Nauticam",retra:"Retra",kraken:"Kraken Sports",mares:"Mares",scubapro:"Scubapro",padi:"PADI",
-    garmin:"Garmin",shearwater:"Shearwater",suunto:"Suunto",swarovski:"Swarovski Optik",zeiss:"ZEISS",leica:"Leica",
-    thenorthface:"The North Face",tnf:"The North Face",patagonia:"Patagonia",arcteryx:"Arc\u2019teryx",fjallraven:"Fj\u00e4llr\u00e4ven",
-    gitzo:"Gitzo",fstop:"f-stop",shimoda:"Shimoda",adobe:"Adobe",dji:"DJI",gopro:"GoPro",insta360:"Insta360",
-    dugit:"Dugit",snapir:"Snapir",ahladive:"Ahla Dive",eitan:"Eitan Detectors"};
-  function show(){var k=(location.hash||"").slice(1).toLowerCase().replace(/[^a-z0-9]/g,"");var n=B[k];
-    var f=document.getElementById("for");if(n){document.getElementById("brand").textContent=n;f.hidden=false;document.title="Matan Sharon \u00d7 "+n}else{f.hidden=true}}
-  show();window.addEventListener("hashchange",show);
-})();
-</script>
 </body>
 </html>
