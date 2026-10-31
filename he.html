@@ -33,7 +33,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[
-{"@type":"Person","@id":"https://mw.photography/#matan","name":"Matan Wild","jobTitle":"Wildlife and landscape photographer, photography educator","email":"mailto:matan@matanwildphotography.com","telephone":"+972537432878","url":"https://mw.photography/","worksFor":{"@id":"https://mw-phototours.com/#org"},"sameAs":["https://mw-phototours.com","https://www.instagram.com/mw_phototours","https://www.facebook.com/people/MW-Photo-Tours/61580936126537/"]},
+{"@type":"Person","@id":"https://mw.photography/#matan","name":"Matan Wild","jobTitle":"Wildlife and landscape photographer, photography educator","email":"mailto:matan@matanwildphotography.com","telephone":"+972537432878","url":"https://mw.photography/","worksFor":{"@id":"https://mw-phototours.com/#org"},"sameAs":["https://mw-phototours.com","https://www.instagram.com/mw_phototours","https://www.tiktok.com/@mwphototours","https://www.facebook.com/people/MW-Photo-Tours/61580936126537/"]},
 {"@type":"Organization","@id":"https://mw-phototours.com/#org","name":"MW Photo Tours","url":"https://mw-phototours.com"},
 {"@type":"Periodical","name":"The Wild Side of Photography","inLanguage":["he","en"],"creator":{"@id":"https://mw.photography/#matan"}}]}</script>
 <script>document.documentElement.classList.add('js','mwp-wait');setTimeout(()=>document.documentElement.classList.add('mwp-go'),4000);document.documentElement.lang='he';document.documentElement.dir='rtl'</script>
@@ -168,12 +168,13 @@ html.intro-play{overflow:hidden}
 .follow a{text-decoration:none;color:var(--off);border-bottom:1px solid rgba(244,175,86,.4);padding-bottom:3px;transition:border-color .3s,color .3s}
 .follow a:hover{color:var(--gold);border-bottom-color:var(--gold)}
 .big-cap{margin:16px 0 0;font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--muted)}
-.plats{list-style:none;margin:clamp(24px,4vh,36px) 0 0;padding:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));border-top:1px solid var(--rule)}
+.plats{list-style:none;margin:clamp(24px,4vh,36px) 0 0;padding:0;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));border-top:1px solid var(--rule)}
 .plats li{display:grid;gap:8px;align-content:start;padding-block-start:22px;padding-inline-end:16px}
 .plats .odo{font-size:clamp(28px,3vw,46px);font-weight:300;letter-spacing:-.02em}
 .plats .lbl{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--faint)}
-@media (max-width:1100px){.plats{grid-template-columns:repeat(3,minmax(0,1fr))}}
-@media (max-width:760px){.plats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:1100px){.plats{grid-template-columns:repeat(4,minmax(0,1fr))}}
+/* phones: the largest channel leads on its own line, the other six sit in pairs */
+@media (max-width:760px){.plats{grid-template-columns:repeat(2,minmax(0,1fr))}.plats li:first-child{grid-column:1/-1}}
 .mag-line{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,4vw,64px);align-items:end;margin-top:clamp(72px,12vh,130px);padding-top:clamp(36px,6vh,60px);border-top:1px solid var(--rule)}
 .mag{margin:16px 0 0;font-size:clamp(40px,5.6vw,96px);font-weight:250;line-height:.98;letter-spacing:-.035em}
 .mag b{font-weight:750}
@@ -370,6 +371,8 @@ html:has(.lb[open]){overflow:hidden}
 .good{margin:22px 0 0;font-size:14px;line-height:1.6;color:var(--muted)}
 .good span{display:block;margin-bottom:4px;font-size:11px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:var(--faint)}
 .reach-grid{list-style:none;margin:24px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px 18px}
+/* the largest channel leads on its own line, the rest sit in even rows */
+.reach-grid li:first-child{grid-column:1/-1}
 .reach-grid li{display:grid;gap:2px;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--faint)}
 .reach-grid b{font-size:24px;font-weight:300;letter-spacing:-.01em;text-transform:none;color:var(--off)}
 .sheet-cta{display:flex;flex-wrap:wrap;align-items:center;gap:14px 26px;margin-top:30px}
@@ -668,7 +671,7 @@ html:has(.doc[open]){overflow:hidden}
       <h3 id="sheet-t5">קהילה פעילה <b>של מטיילים וצלמים</b></h3>
       <p class="sheet-lead">מטיילים וצלמים שיוצאים אל הטבע, וקוראים את The Wild Side of Photography בעברית ובאנגלית. 3.4 מיליון צפיות באינסטגרם בחודש אחד.</p>
       <ul class="reach-grid" aria-label="עוקבים בכל ערוץ">
-        <li><b>12,000</b>פייסבוק</li><li><b>4,200</b>קבוצת פייסבוק</li><li><b>4,000</b>אינסטגרם</li>
+        <li><b>25,000</b>טיקטוק</li><li><b>12,000</b>פייסבוק</li><li><b>4,200</b>קבוצת פייסבוק</li><li><b>4,000</b>אינסטגרם</li>
         <li><b>2,800</b>יוטיוב</li><li><b>750</b>רשימת תפוצה</li><li><b>360</b>קהילת וואטסאפ</li>
       </ul>
       <h4>רעיונות שאפשר לפתח יחד</h4>
@@ -822,8 +825,9 @@ html:has(.doc[open]){overflow:hidden}
       <span class="num big"><span class="odo" data-odo="3.4" data-label="3.4 מיליון"></span><span class="suf" aria-hidden="true">M</span></span>
       <p class="big-cap fade">צפיות באינסטגרם בחודש אחד</p>
     </div>
-    <p class="plats-head fade">קהילה פעילה. <b>24,110</b> עוקבים בכל הערוצים שלנו.</p>
+    <p class="plats-head fade">קהילה פעילה. <b>49,110</b> עוקבים בכל הערוצים שלנו.</p>
     <ul class="plats" data-sec data-at=".92">
+      <li><span class="odo" data-odo="25000"></span><span class="lbl">טיקטוק</span></li>
       <li><span class="odo" data-odo="12000"></span><span class="lbl">פייסבוק</span></li>
       <li><span class="odo" data-odo="4200"></span><span class="lbl">קבוצת פייסבוק</span></li>
       <li><span class="odo" data-odo="4000"></span><span class="lbl">אינסטגרם</span></li>
@@ -831,7 +835,7 @@ html:has(.doc[open]){overflow:hidden}
       <li><span class="odo" data-odo="750"></span><span class="lbl">רשימת תפוצה</span></li>
       <li><span class="odo" data-odo="360"></span><span class="lbl">קהילת וואטסאפ</span></li>
     </ul>
-    <p class="follow fade"><span>עקבו אחרינו</span><a href="https://www.instagram.com/mw_phototours" target="_blank" rel="noopener">אינסטגרם ↗</a><a href="https://www.facebook.com/people/MW-Photo-Tours/61580936126537/" target="_blank" rel="noopener">פייסבוק ↗</a><a href="https://mw-phototours.com" target="_blank" rel="noopener">MW Photo Tours ↗</a></p>
+    <p class="follow fade"><span>עקבו אחרינו</span><a href="https://www.instagram.com/mw_phototours" target="_blank" rel="noopener">אינסטגרם ↗</a><a href="https://www.tiktok.com/@mwphototours" target="_blank" rel="noopener">טיקטוק ↗</a><a href="https://www.facebook.com/people/MW-Photo-Tours/61580936126537/" target="_blank" rel="noopener">פייסבוק ↗</a><a href="https://mw-phototours.com" target="_blank" rel="noopener">MW Photo Tours ↗</a></p>
     <div class="mag-line">
       <div>
         <p class="kick fade">המגזין</p>
@@ -915,7 +919,7 @@ html:has(.doc[open]){overflow:hidden}
 
 <footer class="end">
   <p aria-hidden="true">MWP</p>
-  <div class="foot"><small>יוצאים אל הטבע. חוזרים עם סיפור.</small><nav aria-label="ברשתות"><a href="https://www.instagram.com/mw_phototours" target="_blank" rel="noopener">אינסטגרם ↗</a><a href="https://www.facebook.com/people/MW-Photo-Tours/61580936126537/" target="_blank" rel="noopener">פייסבוק ↗</a><a href="https://mw-phototours.com" target="_blank" rel="noopener">MW Photo Tours ↗</a></nav></div>
+  <div class="foot"><small>יוצאים אל הטבע. חוזרים עם סיפור.</small><nav aria-label="ברשתות"><a href="https://www.instagram.com/mw_phototours" target="_blank" rel="noopener">אינסטגרם ↗</a><a href="https://www.tiktok.com/@mwphototours" target="_blank" rel="noopener">טיקטוק ↗</a><a href="https://www.facebook.com/people/MW-Photo-Tours/61580936126537/" target="_blank" rel="noopener">פייסבוק ↗</a><a href="https://mw-phototours.com" target="_blank" rel="noopener">MW Photo Tours ↗</a></nav></div>
   <div class="legal">
     <p>© 2026 Matan Wild Photography. כל הזכויות שמורות. אין להשתמש בצילומים ובסרטים ללא אישור בכתב.</p>
     <nav aria-label="מידע משפטי"><button type="button" data-doc-open="terms">תנאי שימוש</button><button type="button" data-doc-open="privacy">פרטיות</button><button type="button" data-doc-open="access">נגישות</button></nav>
