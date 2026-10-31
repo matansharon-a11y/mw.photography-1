@@ -36,7 +36,7 @@
 {"@type":"Person","@id":"https://mw.photography/#matan","name":"Matan Wild","jobTitle":"Wildlife and landscape photographer, photography educator","email":"mailto:matan@matanwildphotography.com","telephone":"+972537432878","url":"https://mw.photography/","worksFor":{"@id":"https://mw-phototours.com/#org"},"sameAs":["https://mw-phototours.com","https://www.instagram.com/mw_phototours","https://www.facebook.com/people/MW-Photo-Tours/61580936126537/"]},
 {"@type":"Organization","@id":"https://mw-phototours.com/#org","name":"MW Photo Tours","url":"https://mw-phototours.com"},
 {"@type":"Periodical","name":"The Wild Side of Photography","inLanguage":["he","en"],"creator":{"@id":"https://mw.photography/#matan"}}]}</script>
-<script>document.documentElement.classList.add('js','mwp-wait')</script>
+<script>document.documentElement.classList.add('js','mwp-wait');setTimeout(()=>document.documentElement.classList.add('mwp-go'),4000)</script>
 <link rel="stylesheet" href="blocks.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -117,8 +117,11 @@ html.intro-play{overflow:hidden}
 .stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;background:var(--night)}
 .stage .photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:66% 32%;transform-origin:66% 32%;will-change:transform}
 .stage canvas{position:absolute;inset:0;width:100%;height:100%}
-.veil{position:absolute;inset:0;z-index:3;background:var(--night);display:grid;place-items:center;animation:veil 1.2s 1.5s cubic-bezier(.7,0,.3,1) forwards;pointer-events:none}
-.veil i{display:block;width:min(60vw,640px);height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);transform:scaleX(0);animation:line 1.3s .2s cubic-bezier(.2,.8,.2,1) forwards}
+.veil{position:absolute;inset:0;z-index:3;background:var(--night);display:grid;place-items:center;animation:veil .8s .15s cubic-bezier(.7,0,.3,1) forwards;pointer-events:none}
+/* the veil waits for the photo (or 4 seconds at most), so a fast connection is not held behind a fixed delay */
+.js .veil{animation-play-state:paused}
+.js.mwp-go .veil{animation-play-state:running}
+.veil i{display:block;width:min(60vw,640px);height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);transform:scaleX(0);animation:line .9s .1s cubic-bezier(.2,.8,.2,1) forwards}
 @keyframes line{to{transform:scaleX(1)}}
 @keyframes veil{to{opacity:0;visibility:hidden}}
 .cue{position:absolute;z-index:2;left:50%;bottom:calc(28px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);display:grid;justify-items:center;gap:10px;font-size:10px;letter-spacing:.4em;text-indent:.4em;text-transform:uppercase;color:var(--faint);transition:opacity .4s}
@@ -1216,9 +1219,13 @@ window.MWP_BOOT = () => {
       p0 = clamp(p0 + (now - last) / 1000 / (hurry ? .7 : PLAY)); last = now; onScroll();
       if (p0 < 1) requestAnimationFrame(step); else root.classList.remove('intro-play');
     };
-    // start a beat after the veil has lifted (it clears 2.7 seconds after the page opens), so MWP is seen whole first
-    setTimeout(() => requestAnimationFrame(now => { last = now; requestAnimationFrame(step); }), Math.max(0, 3200 - performance.now()));
+    // start a beat after the veil has lifted, so MWP is seen whole first
+    const fly = () => requestAnimationFrame(now => { last = now; requestAnimationFrame(step); });
+    new MutationObserver((m, o) => { if (root.classList.contains('mwp-go')) { o.disconnect(); setTimeout(fly, 1100); } }).observe(root, {attributes: true, attributeFilter: ['class']});
   }
+  // the veil lifts once the photo is ready and the gold line has drawn (about a second in)
+  (photo.decode ? photo.decode() : Promise.resolve()).catch(() => {})
+    .then(() => setTimeout(() => root.classList.add('mwp-go'), Math.max(0, 1000 - performance.now())));
   // ---------- precision: true digit widths and optical left edges ----------
   // Each counter cell takes the width of the digit it lands on, so "1" no longer sits in a wide box.
   const trueDigits = () => odos.forEach(el => {
