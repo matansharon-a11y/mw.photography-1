@@ -204,12 +204,9 @@ html.intro-play{overflow:hidden}
 
 /* ---------- 02 field: expeditions ---------- */
 .field{position:relative;min-height:110vh;display:grid;align-items:center;overflow:hidden;isolation:isolate;padding-block:clamp(110px,16vh,200px)}
-.clip{position:absolute;inset:0;z-index:-2;transition:clip-path 1.9s var(--ease)}
-.js .clip{clip-path:inset(16% 12% 16% 12%)}
-.js .in .clip{clip-path:inset(0 0 0 0)}
-.clip img{width:100%;height:100%;object-fit:cover;object-position:40% 45%;transform:scale(1.04);transition:transform 2.4s var(--ease)}
-.js .clip img{transform:scale(1.18)}
-.js .in .clip img{transform:scale(1.04)}
+/* the photograph stays still behind the section; only the words move */
+.clip{position:absolute;inset:0;z-index:-2}
+.clip img{width:100%;height:100%;object-fit:cover;object-position:40% 45%}
 .field::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(10,9,8,.9) 0%,rgba(10,9,8,.74) 50%,rgba(10,9,8,.34) 78%,rgba(10,9,8,.08) 100%)}
 .fstats{text-shadow:0 1px 18px rgba(10,9,8,.55)}
 /* the numbers sit on the same four columns as the steps below them */
@@ -522,7 +519,6 @@ html:has(.doc[open]){overflow:hidden}
   .veil{display:none}
   .intro{height:100vh;height:100svh}
   .wd>span,.js .fade,.js .wall li{transition:none;transform:none;opacity:1}
-  .js .clip{clip-path:none;transition:none}.clip img,.js .clip img{transition:none;transform:none}
   .ods{transition:none}
   .js .create img{transition:none;filter:none}
   .col .frame img{transition:none;transform:none}
