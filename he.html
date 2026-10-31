@@ -1318,6 +1318,11 @@ window.MWP_BOOT = () => {
         pos: (li.dataset.revealPos || '50% 50%').split(' ').map(parseFloat), x: 0, y: 0, px: 0, py: 0, on: false, live: false, last: 0};
     });
     let raf = 0, loaded = false;
+    // the five photographs load while the reader scrolls toward the list (or on the first hover, whichever comes first), not with the page
+    const load = () => { if (loaded) return; loaded = true; rows.forEach(Q => { Q.img = new Image(); Q.img.decoding = 'async'; Q.img.src = Q.li.dataset.reveal; if (Q.img.decode) Q.img.decode().catch(() => {}); }); };
+    // (only once the page itself has finished loading, so they never hold up the first photograph)
+    const near = () => { if (rows.length && 'IntersectionObserver' in window) new IntersectionObserver((es, o) => { if (es.some(e => e.isIntersecting)) { o.disconnect(); load(); } }, {rootMargin: '150% 0px'}).observe(rows[0].li.parentElement); };
+    if (document.readyState === 'complete') near(); else addEventListener('load', near, {once: true});
     // canvases match the row in device pixels (capped at 2x); a resize clears them, which is fine between hovers
     const fit = R => {
       const r = R.li.getBoundingClientRect(), dpr = Math.min(devicePixelRatio || 1, 2), w = Math.round(r.width), h = Math.round(r.height);
@@ -1362,8 +1367,7 @@ window.MWP_BOOT = () => {
       const at = e => { const r = R.li.getBoundingClientRect(); R.x = e.clientX - r.left; R.y = e.clientY - r.top; };
       R.li.addEventListener('pointerenter', e => {
         if (e.pointerType === 'touch') return;
-        // the five photographs load on the first visit to the list, not with the page
-        if (!loaded) { loaded = true; rows.forEach(Q => { Q.img = new Image(); Q.img.decoding = 'async'; Q.img.src = Q.li.dataset.reveal; }); }
+        load();
         fit(R); at(e); R.px = R.x; R.py = R.y; R.on = true; R.last = performance.now();
         if (!raf) raf = requestAnimationFrame(tick);
       });
