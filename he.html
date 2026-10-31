@@ -111,7 +111,9 @@ h1,h2,h3,.mag,.over{text-wrap:balance}
 p{text-wrap:pretty}
 
 /* ---------- first page ---------- */
-.intro{position:relative;height:360vh}
+.intro{position:relative;height:100vh;height:100svh}
+/* while the first page plays itself, the page holds still */
+html.intro-play{overflow:hidden}
 .stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;background:var(--night)}
 .stage .photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:66% 32%;transform-origin:66% 32%;will-change:transform}
 .stage canvas{position:absolute;inset:0;width:100%;height:100%}
@@ -1115,8 +1117,11 @@ window.MWP_BOOT = () => {
     ctx.globalCompositeOperation = 'source-over';
   };
   let gone = false;
+  // the first page plays by itself once the veil lifts; a wheel, swipe or key hurries it to the end, then the page scrolls as normal
+  const PLAY = 3.6, root = document.documentElement;
+  let p0 = still || location.hash.length > 1 || scrollY > 0 ? 1 : 0, hurry = false;
   const frame = () => {
-    const r = intro.getBoundingClientRect(), p = still ? 1 : clamp(-r.top / (r.height - innerHeight));
+    const r = intro.getBoundingClientRect(), p = p0;
     const past = p > .9 || r.bottom < innerHeight * .5;
     mark.classList.toggle('on', past); talk.classList.toggle('on', past); lang.classList.toggle('on', past); scrim.classList.toggle('on', past);
     // once the first page has scrolled away, stop repainting it
@@ -1234,6 +1239,17 @@ window.MWP_BOOT = () => {
   bands.forEach(o => o.img.addEventListener('load', () => { measure(); onScroll(); }));
   measure();
   size(); // draw the cut-out straight away with the fallback font, then again once Google Sans Flex is in
+  if (p0 < 1) {
+    root.classList.add('intro-play');
+    ['wheel', 'touchmove', 'keydown'].forEach(t => addEventListener(t, () => { hurry = true; }, {passive: true, once: true}));
+    let last = 0;
+    const step = now => {
+      p0 = clamp(p0 + (now - last) / 1000 / (hurry ? .7 : PLAY)); last = now; onScroll();
+      if (p0 < 1) requestAnimationFrame(step); else root.classList.remove('intro-play');
+    };
+    // start a beat after the veil has lifted (it clears 2.7 seconds after the page opens), so MWP is seen whole first
+    setTimeout(() => requestAnimationFrame(now => { last = now; requestAnimationFrame(step); }), Math.max(0, 3200 - performance.now()));
+  }
   // ---------- precision: true digit widths and optical left edges ----------
   // Each counter cell takes the width of the digit it lands on, so "1" no longer sits in a wide box.
   const trueDigits = () => odos.forEach(el => {
