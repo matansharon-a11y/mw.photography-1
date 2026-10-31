@@ -33,7 +33,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[
-{"@type":"Person","@id":"https://mw.photography/#matan","name":"Matan Wild","jobTitle":"Wildlife and landscape photographer, photography educator","email":"mailto:matan@matanwildphotography.com","telephone":"+972537432878","url":"https://mw.photography/","worksFor":{"@id":"https://mw-phototours.com/#org"},"sameAs":["https://mw-phototours.com","https://www.instagram.com/mw_phototours","https://www.facebook.com/people/MW-Photo-Tours/61580936126537/"]},
+{"@type":"Person","@id":"https://mw.photography/#matan","name":"Matan Wild","jobTitle":"Wildlife and landscape photographer, photography educator","email":"mailto:matan@matanwildphotography.com","telephone":"+972537432878","url":"https://mw.photography/","worksFor":{"@id":"https://mw-phototours.com/#org"},"sameAs":["https://mw-phototours.com","https://www.instagram.com/mw_phototours","https://www.tiktok.com/@mwphototours","https://www.facebook.com/people/MW-Photo-Tours/61580936126537/"]},
 {"@type":"Organization","@id":"https://mw-phototours.com/#org","name":"MW Photo Tours","url":"https://mw-phototours.com"},
 {"@type":"Periodical","name":"The Wild Side of Photography","inLanguage":["he","en"],"creator":{"@id":"https://mw.photography/#matan"}}]}</script>
 <script>document.documentElement.classList.add('js','mwp-wait');setTimeout(()=>document.documentElement.classList.add('mwp-go'),4000)</script>
@@ -168,12 +168,13 @@ html.intro-play{overflow:hidden}
 .follow a{text-decoration:none;color:var(--off);border-bottom:1px solid rgba(244,175,86,.4);padding-bottom:3px;transition:border-color .3s,color .3s}
 .follow a:hover{color:var(--gold);border-bottom-color:var(--gold)}
 .big-cap{margin:16px 0 0;font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--muted)}
-.plats{list-style:none;margin:clamp(24px,4vh,36px) 0 0;padding:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));border-top:1px solid var(--rule)}
+.plats{list-style:none;margin:clamp(24px,4vh,36px) 0 0;padding:0;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));border-top:1px solid var(--rule)}
 .plats li{display:grid;gap:8px;align-content:start;padding-block-start:22px;padding-inline-end:16px}
 .plats .odo{font-size:clamp(28px,3vw,46px);font-weight:300;letter-spacing:-.02em}
 .plats .lbl{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--faint)}
-@media (max-width:1100px){.plats{grid-template-columns:repeat(3,minmax(0,1fr))}}
-@media (max-width:760px){.plats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:1100px){.plats{grid-template-columns:repeat(4,minmax(0,1fr))}}
+/* phones: the largest channel leads on its own line, the other six sit in pairs */
+@media (max-width:760px){.plats{grid-template-columns:repeat(2,minmax(0,1fr))}.plats li:first-child{grid-column:1/-1}}
 .mag-line{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,4vw,64px);align-items:end;margin-top:clamp(72px,12vh,130px);padding-top:clamp(36px,6vh,60px);border-top:1px solid var(--rule)}
 .mag{margin:16px 0 0;font-size:clamp(40px,5.6vw,96px);font-weight:250;line-height:.98;letter-spacing:-.035em}
 .mag b{font-weight:750}
@@ -370,6 +371,8 @@ html:has(.lb[open]){overflow:hidden}
 .good{margin:22px 0 0;font-size:14px;line-height:1.6;color:var(--muted)}
 .good span{display:block;margin-bottom:4px;font-size:11px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:var(--faint)}
 .reach-grid{list-style:none;margin:24px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px 18px}
+/* the largest channel leads on its own line, the rest sit in even rows */
+.reach-grid li:first-child{grid-column:1/-1}
 .reach-grid li{display:grid;gap:2px;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--faint)}
 .reach-grid b{font-size:24px;font-weight:300;letter-spacing:-.01em;text-transform:none;color:var(--off)}
 .sheet-cta{display:flex;flex-wrap:wrap;align-items:center;gap:14px 26px;margin-top:30px}
@@ -637,7 +640,7 @@ html:has(.doc[open]){overflow:hidden}
       <h3 id="sheet-t5">An active community <b>of travellers and photographers</b></h3>
       <p class="sheet-lead">People who travel to photograph the wild, and read The Wild Side of Photography in Hebrew and English. 3.4 million Instagram views in a single month.</p>
       <ul class="reach-grid" aria-label="Followers by channel">
-        <li><b>12,000</b>Facebook</li><li><b>4,200</b>Facebook group</li><li><b>4,000</b>Instagram</li>
+        <li><b>25,000</b>TikTok</li><li><b>12,000</b>Facebook</li><li><b>4,200</b>Facebook group</li><li><b>4,000</b>Instagram</li>
         <li><b>2,800</b>YouTube</li><li><b>750</b>Email</li><li><b>360</b>WhatsApp community</li>
       </ul>
       <h4>Ideas we can shape together</h4>
@@ -791,8 +794,9 @@ html:has(.doc[open]){overflow:hidden}
       <span class="num big"><span class="odo" data-odo="3.4" data-label="3.4 million"></span><span class="suf" aria-hidden="true">M</span></span>
       <p class="big-cap fade">Instagram views in a single month</p>
     </div>
-    <p class="plats-head fade">A committed, active community. <b>24,110</b> followers across our channels.</p>
+    <p class="plats-head fade">A committed, active community. <b>49,110</b> followers across our channels.</p>
     <ul class="plats" data-sec data-at=".92">
+      <li><span class="odo" data-odo="25000"></span><span class="lbl">TikTok</span></li>
       <li><span class="odo" data-odo="12000"></span><span class="lbl">Facebook</span></li>
       <li><span class="odo" data-odo="4200"></span><span class="lbl">Facebook group</span></li>
       <li><span class="odo" data-odo="4000"></span><span class="lbl">Instagram</span></li>
@@ -800,7 +804,7 @@ html:has(.doc[open]){overflow:hidden}
       <li><span class="odo" data-odo="750"></span><span class="lbl">Email</span></li>
       <li><span class="odo" data-odo="360"></span><span class="lbl">WhatsApp community</span></li>
     </ul>
-    <p class="follow fade"><span>Follow along</span><a href="https://www.instagram.com/mw_phototours" target="_blank" rel="noopener">Instagram ↗</a><a href="https://www.facebook.com/people/MW-Photo-Tours/61580936126537/" target="_blank" rel="noopener">Facebook ↗</a><a href="https://mw-phototours.com" target="_blank" rel="noopener">MW Photo Tours ↗</a></p>
+    <p class="follow fade"><span>Follow along</span><a href="https://www.instagram.com/mw_phototours" target="_blank" rel="noopener">Instagram ↗</a><a href="https://www.tiktok.com/@mwphototours" target="_blank" rel="noopener">TikTok ↗</a><a href="https://www.facebook.com/people/MW-Photo-Tours/61580936126537/" target="_blank" rel="noopener">Facebook ↗</a><a href="https://mw-phototours.com" target="_blank" rel="noopener">MW Photo Tours ↗</a></p>
     <div class="mag-line">
       <div>
         <p class="kick fade">The magazine</p>
@@ -884,7 +888,7 @@ html:has(.doc[open]){overflow:hidden}
 
 <footer class="end">
   <p aria-hidden="true">MWP</p>
-  <div class="foot"><small>Into the wild. Back with the story.</small><nav aria-label="Elsewhere"><a href="https://www.instagram.com/mw_phototours" target="_blank" rel="noopener">Instagram ↗</a><a href="https://www.facebook.com/people/MW-Photo-Tours/61580936126537/" target="_blank" rel="noopener">Facebook ↗</a><a href="https://mw-phototours.com" target="_blank" rel="noopener">MW Photo Tours ↗</a></nav></div>
+  <div class="foot"><small>Into the wild. Back with the story.</small><nav aria-label="Elsewhere"><a href="https://www.instagram.com/mw_phototours" target="_blank" rel="noopener">Instagram ↗</a><a href="https://www.tiktok.com/@mwphototours" target="_blank" rel="noopener">TikTok ↗</a><a href="https://www.facebook.com/people/MW-Photo-Tours/61580936126537/" target="_blank" rel="noopener">Facebook ↗</a><a href="https://mw-phototours.com" target="_blank" rel="noopener">MW Photo Tours ↗</a></nav></div>
   <div class="legal">
     <p>© 2026 Matan Wild Photography. All rights reserved. Photographs and films may not be used without written permission.</p>
     <nav aria-label="Legal"><button type="button" data-doc-open="terms">Terms of use</button><button type="button" data-doc-open="privacy">Privacy</button><button type="button" data-doc-open="access">Accessibility</button></nav>
