@@ -149,11 +149,12 @@ p{text-wrap:pretty}
 @media (max-width:760px){.roles{grid-template-columns:1fr}.roles li{border-inline-end:0;border-bottom:1px solid var(--rule);padding-inline-start:0!important}}
 .hero-num{margin-top:clamp(64px,11vh,120px);display:grid;justify-items:start}
 .odo{display:inline-flex;direction:ltr;font-variant-numeric:proportional-nums;line-height:1}
-.od{display:inline-block;height:1em;overflow:hidden;transition:width .6s cubic-bezier(.2,.8,.2,1)}
+/* only the top and bottom are clipped, so a wide digit rolling through a narrow box (a "1") is never cut into a "c" */
+.od{display:inline-block;height:1em;-webkit-clip-path:inset(0 -.5em);clip-path:inset(0 -.5em)}
 /* in a grid cell a counter would stretch across the column; keep it on the reading edge, beside its label */
 .plats .odo,.fstats .odo,.fstats .num{justify-self:start}
 .ods{display:block;transform:translateY(0);transition:transform var(--d,2.4s) cubic-bezier(.12,.82,.18,1)}
-.ods i{display:block;height:1em;font-style:normal;text-align:center}
+.ods i{display:block;height:1em;margin-inline:-.5em;padding-inline:.5em;font-style:normal;text-align:center} /* the box reaches past its cell, so the gold gradient covers a wide digit rolling through */
 .odc{display:inline-block}
 .big{font-size:clamp(84px,15vw,260px);font-weight:200;letter-spacing:-.05em}
 .big .ods i,.big .odc,.big .suf{background:linear-gradient(180deg,#FFF6E6 10%,var(--goldsoft) 90%);-webkit-background-clip:text;background-clip:text;color:transparent}
@@ -1071,9 +1072,6 @@ window.MWP_BOOT = () => {
       void strip.offsetWidth; // start from the resting position so the roll is animated
       strip.style.transform = `translateY(-${20 + +digits[i]}em)`;
     });
-    // once the last digit has landed, each box narrows from the widest digit to its own
-    setTimeout(() => { el.dataset.done = '1'; $$('.od', el).forEach(od => { if (od.dataset.w) od.style.width = od.dataset.w + 'em'; }); },
-      still ? 0 : (1.8 + (digits.length - 1) * 0.22) * 1000);
   };
 
   // ---------- first page: MWP cut out of black, then fly through it ----------
@@ -1151,8 +1149,13 @@ window.MWP_BOOT = () => {
   // a browser that holds autoplay back (an Edge or Safari setting, battery saving) gets another try once the film can play,
   // and again at the visitor's next click, tap or key anywhere but the film's own button, while the film is on screen
   let filmSeen = false;
-  const tryPlay = () => { fv.muted = true; fv.play().catch(e => { if (e && e.name === 'NotAllowedError') film.classList.add('wait'); }); };
-  fv.addEventListener('playing', () => film.classList.remove('wait'));
+  let waitT = 0;
+  const tryPlay = () => { fv.muted = true; fv.play().catch(e => {
+    if (!e || e.name !== 'NotAllowedError') return;
+    // the centred Play button shows only if the film is still held back a moment later, so a refusal that a retry overcomes never flashes it
+    clearTimeout(waitT); waitT = setTimeout(() => { if (fv.paused && filmSeen && !userPaused) film.classList.add('wait'); }, 1500);
+  }); };
+  fv.addEventListener('play', () => { clearTimeout(waitT); film.classList.remove('wait'); });
   const retryPlay = e => { if (e && e.target && ft.contains(e.target)) return; if (filmSeen && !userPaused && fv.paused) tryPlay(); };
   fv.addEventListener('canplay', retryPlay);
   ['pointerdown', 'keydown', 'touchend'].forEach(t => addEventListener(t, retryPlay, {passive: true}));
@@ -1258,16 +1261,11 @@ window.MWP_BOOT = () => {
     .then(() => setTimeout(() => root.classList.add('mwp-go'), Math.max(0, 1000 - performance.now())));
   // ---------- precision: true digit widths and optical left edges ----------
   // Each counter cell takes the width of the digit it lands on, so "1" no longer sits in a wide box.
-  // Until the roll has finished it stays as wide as the widest digit, so the digits rolling past are never cut.
   const trueDigits = () => odos.forEach(el => {
     const fsz = parseFloat(getComputedStyle(el).fontSize), probe = document.createElement('span');
     probe.style.cssText = 'position:absolute;visibility:hidden;white-space:pre'; el.appendChild(probe);
     const digits = [...(+el.dataset.odo).toLocaleString('en-US')].filter(c => /\d/.test(c));
-    const wide = Math.max(...'0123456789'.split('').map(d => { probe.textContent = d; return probe.getBoundingClientRect().width; })) / fsz;
-    $$('.od', el).forEach((od, i) => {
-      probe.textContent = digits[i]; od.dataset.w = (probe.getBoundingClientRect().width / fsz).toFixed(4);
-      od.style.width = (el.dataset.done ? od.dataset.w : wide.toFixed(4)) + 'em';
-    });
+    $$('.od', el).forEach((od, i) => { probe.textContent = digits[i]; od.style.width = (probe.getBoundingClientRect().width / fsz).toFixed(4) + 'em'; });
     probe.remove();
   });
   // Large type starts where its ink starts: the side space built into the first glyph ("1", "O", "I") is pulled back,
