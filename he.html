@@ -38,6 +38,7 @@
 {"@type":"Periodical","name":"The Wild Side of Photography","inLanguage":["he","en"],"creator":{"@id":"https://mw.photography/#matan"}}]}</script>
 <script>document.documentElement.classList.add('js','mwp-wait');setTimeout(()=>document.documentElement.classList.add('mwp-go'),4000);document.documentElement.lang='he';document.documentElement.dir='rtl'</script>
 <link rel="stylesheet" href="blocks.css">
+<link rel="preconnect" href="https://jvyuskfmtsfeijmlscbr.supabase.co" crossorigin>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@200..800&family=Google+Sans:wght@400..700&display=swap">
@@ -112,8 +113,6 @@ p{text-wrap:pretty}
 
 /* ---------- first page ---------- */
 .intro{position:relative;height:100vh;height:100svh}
-/* while the first page plays itself, the page holds still */
-html.intro-play{overflow:hidden}
 .stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;background:var(--night)}
 .stage .photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:66% 32%;transform-origin:66% 32%;will-change:transform}
 .stage canvas{position:absolute;inset:0;width:100%;height:100%}
@@ -281,6 +280,9 @@ html.intro-play{overflow:hidden}
 .film .film-toggle{inset-inline-start:var(--fpad);bottom:var(--fpad)}
 .film .film-cap{inset-inline-end:var(--fpad);bottom:var(--fpad)}
 .film-toggle:hover{border-color:rgba(244,244,244,.7)}
+/* if the browser holds autoplay back (battery saver, a site setting, a data-saver connection), the poster waits with a clear Play button in the middle */
+.film.wait .film-toggle{inset-inline-start:50%;top:50%;bottom:auto;transform:translate(-50%,-50%);padding-block:14px;padding-inline:calc(26px + var(--tr)) 26px;font-size:12px;border-color:rgba(244,244,244,.75);background:rgba(10,9,8,.55)}
+[dir=rtl] .film.wait .film-toggle{transform:translate(50%,-50%)}
 /* phones: the film caption rises above the Play button instead of sharing its line */
 @media (max-width:760px){.film{--fpad:var(--gutter);width:100%;border-radius:0;aspect-ratio:auto;height:min(78svh,620px)}.film .film-cap{bottom:calc(var(--fpad) + 46px)}}
 /* phones: a 2.5:1 band would be a sliver, so it gets tall and the whole panorama pans past as you scroll */
@@ -977,7 +979,7 @@ html:has(.doc[open]){overflow:hidden}
         <li>קישור ״דילוג ליצירת קשר״, מבנה כותרות ברור ואזורים מתויגים בעמוד מסייעים למשתמשי קוראי מסך להתמצא.</li>
         <li>לצילומים יש תיאור טקסטואלי, ולסרט המסע יש תיאור כתוב.</li>
         <li>צבעי הטקסט נבחרו לניגודיות טובה, ואפשר להגדיל את הטקסט בעזרת הזום של הדפדפן.</li>
-        <li>אפשר לעצור רכיבים נעים, וכשהמכשיר מבקש להפחית תנועה, האנימציות נעצרות והסרט ממתין ללחיצה על הפעלה.</li>
+        <li>אפשר לעצור רכיבים נעים, וכשהמכשיר מבקש להפחית תנועה, האנימציות נעצרות. סרט המסע מתנגן ללא קול ויש לו כפתור עצירה משלו.</li>
       </ul>
       <p>אנו שואפים לעמוד ברמה AA של הנחיות WCAG 2.1 ובתקן הישראלי 5568. ייתכן שחלקים מסוימים עדיין אינם נגישים במלואם. אם נתקלתם בכזה, ספרו לנו ונפעל לתקן אותו בתוך זמן סביר.</p>
       <h3>נגישות פיזית</h3>
@@ -1118,7 +1120,8 @@ window.MWP_BOOT = () => {
     ctx.globalCompositeOperation = 'source-over';
   };
   let gone = false;
-  // the first page plays by itself once the veil lifts; a wheel, swipe or key hurries it to the end, then the page scrolls as normal
+  // the first page plays by itself once the veil lifts; the page is never held, so the first wheel, swipe or key scrolls straight away
+  // while the animation races to its end alongside
   const PLAY = 3.6, root = document.documentElement;
   let p0 = still || location.hash.length > 1 || scrollY > 0 ? 1 : 0, hurry = false;
   const frame = () => {
@@ -1140,21 +1143,23 @@ window.MWP_BOOT = () => {
   const frames = $$('.frame', track).map(f => ({f, img: $('img', f)})), cols = $$('[data-speed]'), bands = $$('.band').map(b => ({b, img: $('img', b), over: 0}));
   const narrow = matchMedia('(max-width: 760px)'), end = $('.end');
   // the film plays only while it is on screen and starts loading just before; the viewer can pause it,
-  // and with reduced motion it waits for a tap on Play
+  // it plays muted by itself, reduced motion included, since it has its own Pause button
   const film = $('[data-film]'), fv = $('[data-film-video]'), ft = $('[data-film-toggle]');
-  // with reduced motion, or a data-saver connection, the film waits for a tap on Play
+  // only a data-saver connection waits for a tap on Play
   const lite = !!(navigator.connection && navigator.connection.saveData);
-  let userPaused = still || lite;
+  let userPaused = lite;
+  film.classList.toggle('wait', lite);
   const filmBtn = () => { ft.textContent = fv.paused ? T.playFilm : T.pauseFilm; };
   // a browser that holds autoplay back (an Edge or Safari setting, battery saving) gets another try once the film can play,
   // and again at the visitor's next click, tap or key anywhere but the film's own button, while the film is on screen
   let filmSeen = false;
-  const tryPlay = () => { fv.muted = true; fv.play().catch(() => {}); };
+  const tryPlay = () => { fv.muted = true; fv.play().catch(e => { if (e && e.name === 'NotAllowedError') film.classList.add('wait'); }); };
+  fv.addEventListener('playing', () => film.classList.remove('wait'));
   const retryPlay = e => { if (e && e.target && ft.contains(e.target)) return; if (filmSeen && !userPaused && fv.paused) tryPlay(); };
   fv.addEventListener('canplay', retryPlay);
   ['pointerdown', 'keydown', 'touchend'].forEach(t => addEventListener(t, retryPlay, {passive: true}));
   const filmView = () => {
-    const r = film.getBoundingClientRect(), near = r.top < innerHeight * 1.6 && r.bottom > -innerHeight * .6, seen = r.top < innerHeight && r.bottom > 0;
+    const r = film.getBoundingClientRect(), near = r.top < innerHeight * 3 && r.bottom > -innerHeight * .6, seen = r.top < innerHeight && r.bottom > 0;
     filmSeen = seen;
     if (near && !fv.getAttribute('poster') && fv.dataset.poster) fv.poster = fv.dataset.poster; // the poster too waits until the film is near
     if (near && !userPaused && fv.preload === 'none') {
@@ -1241,7 +1246,9 @@ window.MWP_BOOT = () => {
     if (cv.clientWidth !== W || cv.clientHeight !== H) size(); else onScroll();
   };
   placeHead();
-  addEventListener('scroll', onScroll, {passive: true});
+  // one update per frame, however many scroll events a fast swipe fires
+  let ticking = false;
+  addEventListener('scroll', () => { if (ticking) return; ticking = true; requestAnimationFrame(() => { ticking = false; onScroll(); }); }, {passive: true});
   addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(relayout, 120); });
   // safety nets: also settle on load, back/forward and in-page jumps, so nothing waits for a scroll to appear
   ['load', 'pageshow', 'hashchange'].forEach(t => addEventListener(t, () => { measure(); onScroll(); }));
@@ -1249,16 +1256,18 @@ window.MWP_BOOT = () => {
   measure();
   size(); // draw the cut-out straight away with the fallback font, then again once Google Sans Flex is in
   if (p0 < 1) {
-    root.classList.add('intro-play');
-    ['wheel', 'touchmove', 'keydown'].forEach(t => addEventListener(t, () => { hurry = true; }, {passive: true, once: true}));
-    let last = 0;
+    let last = 0, flying = false, wait = 0;
     const step = now => {
-      p0 = clamp(p0 + (now - last) / 1000 / (hurry ? .7 : PLAY)); last = now; onScroll();
-      if (p0 < 1) requestAnimationFrame(step); else root.classList.remove('intro-play');
+      p0 = clamp(p0 + (now - last) / 1000 / (hurry ? .45 : PLAY)); last = now; onScroll();
+      if (p0 < 1) requestAnimationFrame(step);
     };
     // start a beat after the veil has lifted, so MWP is seen whole first
-    const fly = () => requestAnimationFrame(now => { last = now; requestAnimationFrame(step); });
-    new MutationObserver((m, o) => { if (root.classList.contains('mwp-go')) { o.disconnect(); setTimeout(fly, 1100); } }).observe(root, {attributes: true, attributeFilter: ['class']});
+    const fly = () => { if (flying) return; flying = true; clearTimeout(wait); requestAnimationFrame(now => { last = now; requestAnimationFrame(step); }); };
+    // a visitor who moves first does not wait: the veil lifts and the fly-through finishes in under half a second
+    const rush = () => { if (hurry) return; hurry = true; root.classList.add('mwp-go'); fly(); };
+    ['wheel', 'touchstart', 'keydown'].forEach(t => addEventListener(t, rush, {passive: true, once: true}));
+    addEventListener('scroll', () => { if (scrollY > 0) rush(); }, {passive: true});
+    new MutationObserver((m, o) => { if (root.classList.contains('mwp-go')) { o.disconnect(); wait = setTimeout(fly, 1100); } }).observe(root, {attributes: true, attributeFilter: ['class']});
   }
   // the veil lifts once the photo is ready and the gold line has drawn (about a second in)
   (photo.decode ? photo.decode() : Promise.resolve()).catch(() => {})
