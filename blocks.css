@@ -94,8 +94,6 @@ img.blk-ic{object-fit:contain}
   #site .mark,#site .corner{mix-blend-mode:normal}
   #site .corner{gap:10px}
   #site .talk{--tr:.16em;min-height:36px;padding-inline:calc(14px + var(--tr)) 14px;font-size:10px}
-  /* a shorter fly-through on the first page, so the content arrives sooner */
-  #site .intro{height:250vh}
   /* comfortable finger-sized targets */
   #site .mq-toggle,#site .film-toggle{min-height:40px}
   #site .lines .copy-btn{width:40px;height:40px}
